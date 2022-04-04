@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # --- my apps ---
-    'storage'
+    'storage',
+
+    # --- additional apps ---
+    'rest_framework',
 ]
 
 MIDDLEWARE = [
@@ -109,7 +112,7 @@ if not DEBUG:
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Sofia'
 
 USE_I18N = True
 
