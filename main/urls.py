@@ -6,5 +6,5 @@ urlpatterns = [
     path('', include('storage.urls')),
     path('admin/', admin.site.urls),
     path('api/is_exist/', views.ClientList.as_view()),
-    path('api/is_exist/<int:pk>/', views.ClientDetail.as_view()),
+    # path('api/is_exist/<int:pk>/', views.ClientDetail.as_view()),
 ]

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from rest_framework import generics
+from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
 from .models import Client
@@ -15,14 +16,17 @@ class ClientList(generics.ListCreateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
-    # def post(self, request, *args, **kwargs):
-    #     print('request', request)
-    #     print('args', args)
-    #     print('kwargs', kwargs)
-    #     # if True:
-    #     #     self.create(request, *args, **kwargs)
-    #     #     return Response('hi')
-    #     return Response(f"request: {request}, args: {args}, kwargs: {kwargs}")
+    def post(self, request, *args, **kwargs):
+        serializer = ClientSerializer(data=request.data)
+        if serializer.is_valid():
+            client_n = serializer.validated_data['client_name']
+            client_d_cr = serializer.validated_data['createdAt']
+            if Client.objects.filter(client_name=client_n) and Client.objects.filter(createdAt=client_d_cr):
+                return Response(f"Client ID is exist")
+            else:
+                serializer.save()
+                last_client = Client.objects.all().last()
+                return Response(f"ID: {last_client.pk}")
 
 
 class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
