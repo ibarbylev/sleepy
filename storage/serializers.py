@@ -1,7 +1,7 @@
 from datetime import datetime
 from rest_framework import serializers, permissions
 
-from storage.models import Client
+from storage.models_old import Client, Sleep
 
 
 class ClientSerializer(serializers.ModelSerializer):
@@ -43,3 +43,43 @@ class ClientSerializer(serializers.ModelSerializer):
     #     if attrs:
     #         raise serializers.ValidationError("Ошибка валидации!!!")
     #     return attrs
+
+
+class SleepSerializer(serializers.ModelSerializer):
+    client = ClientSerializer()
+
+    class Meta:
+        model = Sleep
+        fields = '__all__'
+
+    def update(self, client, validated_data):
+        sleeps_data_list = validated_data.pop('sleeps')
+        """
+        [
+            {
+                "startRoutineTime":  "2022-03-22T13:13:28+01:00",
+                "startFallingAsleepTime": "2022-03-22T13:13:28+01:00",
+            },
+            {
+                "startRoutineTime":  "2022-03-22T13:13:28+01:00",
+                "startFallingAsleepTime": "2022-03-22T13:13:28+01:00",
+            },
+        ]
+        """
+
+        instance.username = validated_data.get('username', instance.username)
+        instance.email = validated_data.get('email', instance.email)
+        instance.save()
+
+        profile.is_premium_member = profile_data.get(
+            'is_premium_member',
+            profile.is_premium_member
+        )
+        profile.has_support_contract = profile_data.get(
+            'has_support_contract',
+            profile.has_support_contract
+         )
+        profile.save()
+
+        return instance
+

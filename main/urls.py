@@ -7,4 +7,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/is_exist/', views.ClientList.as_view()),
     path('api/is_exist/<int:pk>/', views.ClientDetail.as_view()),
+    path('api/add-sleeps/<int:pk>', views.ClientAddSleeps.as_view()),
 ]
