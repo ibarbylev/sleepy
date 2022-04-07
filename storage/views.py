@@ -16,6 +16,9 @@ class ClientList(generics.ListCreateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
+    # def get(self, request, *args, **kwargs):
+    #     return Response(f"forbidden request!")
+
     def post(self, request, *args, **kwargs):
         serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
@@ -27,6 +30,8 @@ class ClientList(generics.ListCreateAPIView):
                 serializer.save()
                 last_client = Client.objects.all().last()
                 return Response(f"ID: {last_client.pk}")
+
+        return Response(f"Error of data validation!!!")
 
 
 class ClientDetail(generics.RetrieveUpdateDestroyAPIView):

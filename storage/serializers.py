@@ -7,7 +7,7 @@ from storage.models import Client
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ['client_name', 'birthdate', 'createdAt', 'sleeps']
+        fields = ['id', 'client_name', 'birthdate', 'createdAt', 'sleeps']
 
     def validate_birthdate(self, value):
         """
@@ -26,6 +26,7 @@ class ClientSerializer(serializers.ModelSerializer):
         """
         Check date between 01.01.2021 and 01.01.2052
         """
+        print(value)
         if not value:
             raise serializers.ValidationError('createdAt must be date type!!!')
 
