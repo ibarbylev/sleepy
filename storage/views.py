@@ -37,7 +37,7 @@ class ClientList(generics.ListCreateAPIView):
                 last_client = Client.objects.all().last()
                 return Response(f"ID: {last_client.pk}")
 
-        return Response(f"Error of data validation!!!")
+        return Response(f"Error of data validation: {serializer.errors}")
 
 
 class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
