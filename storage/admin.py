@@ -1,5 +1,5 @@
 from django.contrib import admin
-from storage.models_old import Segment, Sleep, Client
+from storage.models import Segment, Sleep, Client
 
 
 admin.site.register(Segment)

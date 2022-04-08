@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
-from .models_old import Client
+from .models import Client
 from .serializers import ClientSerializer
 
 
@@ -25,11 +25,13 @@ class ClientList(generics.ListCreateAPIView):
             client_n = serializer.validated_data['client_name']
             client_d_cr = serializer.validated_data['createdAt']
 
-            client_from_db = Client.objects.filter(client_name=client_n).first()
-            client_nn = client_from_db.client_name
-            client_date_reg = client_from_db.createdAt
-            if client_nn == client_n and client_date_reg == client_d_cr:
-                return Response(f"Client ID is exist")
+            clients = Client.objects.filter(client_name=client_n)
+            if clients:
+                client_from_db = clients.first()
+                client_nn = client_from_db.client_name
+                client_date_reg = client_from_db.createdAt
+                if client_nn == client_n and client_date_reg == client_d_cr:
+                    return Response(f"Client ID is exist")
             else:
                 serializer.save()
                 last_client = Client.objects.all().last()
@@ -59,55 +61,6 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
 """
 http://127.0.0.1:8000/api/is_exist/
 [
-    {
-        "id": 1,
-        "client_name": "John Smith",
-        "birthdate": "2022-04-04T03:07:30+03:00",
-        "createdAt": "2022-04-04T03:07:34+03:00",
-        "sleeps": null
-    },
-    {
-        "id": 7,
-        "client_name": "sdfg",
-        "birthdate": "2021-11-09T14:00:00+02:00",
-        "createdAt": null,
-        "sleeps": null
-    },
-    {
-        "id": 8,
-        "client_name": "asdf",
-        "birthdate": "2021-11-09T14:00:00+02:00",
-        "createdAt": null,
-        "sleeps": null
-    },
-    {
-        "id": 9,
-        "client_name": "asdf",
-        "birthdate": "2021-11-09T14:00:00+02:00",
-        "createdAt": null,
-        "sleeps": null
-    },
-    {
-        "id": 10,
-        "client_name": "asg",
-        "birthdate": "2021-11-09T14:00:00+02:00",
-        "createdAt": null,
-        "sleeps": null
-    },
-    {
-        "id": 11,
-        "client_name": "asdfasa",
-        "birthdate": "2021-11-09T14:00:00+02:00",
-        "createdAt": "2021-11-09T14:00:00+02:00",
-        "sleeps": null
-    },
-    {
-        "id": 12,
-        "client_name": "aaa",
-        "birthdate": "2021-11-09T14:00:00+02:00",
-        "createdAt": "2021-11-09T14:00:00+02:00",
-        "sleeps": null
-    },
     {
         "id": 13,
         "client_name": "aaaA",

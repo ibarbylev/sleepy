@@ -1,13 +1,13 @@
 from datetime import datetime
 from rest_framework import serializers, permissions
 
-from storage.models_old import Client, Sleep
+from storage.models import Client, Sleep
 
 
 class ClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ['id', 'client_name', 'birthdate', 'createdAt', 'sleeps']
+        fields = ['id', 'client_name', 'birthdate', 'createdAt']
 
     def validate_birthdate(self, value):
         """
