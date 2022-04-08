@@ -66,7 +66,16 @@ http://127.0.0.1:8000/api/is_exist/
         "client_name": "aaaA",
         "birthdate": "2021-11-09T14:00:00+02:00",
         "createdAt": "2021-11-09T14:00:00+02:00",
-        "sleeps": null
+        "sleeps": [
+            {
+             "startRoutineTime":  "2022-03-22T13:13:28+01:00",
+             "startFallingAsleepTime": "2022-03-22T13:13:28+01:00"
+            },
+            {
+             "startRoutineTime":  "2022-03-22T13:13:28+01:00",
+             "startFallingAsleepTime": "2022-03-22T13:13:28+01:00"
+            }
+        ]
     },
     {
         "id": 14,
