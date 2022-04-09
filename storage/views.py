@@ -11,6 +11,57 @@ def index_view(request):
     return render(request, 'storage/index.html')
 
 
+def check_is_client_exists(serializer, pk=None):
+    """
+    Check if client exists by name, date of create account and pk(optional)
+    """
+
+    client_n = serializer.validated_data['client_name']
+    client_d_cr = serializer.validated_data['createdAt']
+
+    client = Client.objects.filter(client_name=client_n)
+    if client:
+        client_from_db = client.first()
+        client_nn = client_from_db.client_name
+        client_date_reg = client_from_db.createdAt
+        if client_nn == client_n and client_date_reg == client_d_cr:
+            if pk is None:
+                return True
+            else:
+                if client.pk == pk:
+                    return True
+
+
+# class ClientList(generics.CreateAPIView):
+# TODO change ListCreateAPIView to CreateAPIView
+class ClientIsExists(generics.ListCreateAPIView):
+    """
+    Check the client by name, birthdate and date of create account
+    (POST request with JSON with fields:
+        1. client_name
+        2. birthdate
+        3. createdAt)
+    If exists --> return "Client ID is exist"
+    If doesn't -->
+        1. Create a new client
+        2. Return client id
+    """
+    queryset = Client.objects.all()
+    serializer_class = ClientSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = ClientSerializer(data=request.data)
+        if serializer.is_valid():
+            if check_is_client_exists(serializer):
+                return Response(f"Client ID is exist")
+            else:
+                serializer.save()
+                new_created_client = Client.objects.all().last()
+                return Response(f"ID: {new_created_client.pk}")
+
+        return Response(f"Error of data validation: {serializer.errors}")
+
+
 # class ClientList(generics.CreateAPIView):
 # TODO change ListCreateAPIView to CreateAPIView
 class ClientList(generics.ListCreateAPIView):
@@ -29,9 +80,9 @@ class ClientList(generics.ListCreateAPIView):
             client_n = serializer.validated_data['client_name']
             client_d_cr = serializer.validated_data['createdAt']
 
-            clients = Client.objects.filter(client_name=client_n)
-            if clients:
-                client_from_db = clients.first()
+            client = Client.objects.filter(client_name=client_n)
+            if client:
+                client_from_db = client.first()
                 client_nn = client_from_db.client_name
                 client_date_reg = client_from_db.createdAt
                 if client_nn == client_n and client_date_reg == client_d_cr:
@@ -53,7 +104,7 @@ class ClientDeleteClientSleeps(generics.RetrieveUpdateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
-    def get(self, request, pk,  *args, **kwargs):
+    def get(self, request, pk, *args, **kwargs):
         print('pk =', pk)
         return self.retrieve(request, *args, **kwargs)
 

@@ -92,7 +92,6 @@ class ClientSerializer(serializers.ModelSerializer):
         """
         Check date between 01.01.2021 and 01.01.2052
         """
-        print(value)
         if not value:
             raise serializers.ValidationError('createdAt must be date type!!!')
 
