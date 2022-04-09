@@ -54,42 +54,42 @@ class ClientIsExists(generics.ListCreateAPIView):
             else:
                 serializer.save()
                 new_created_client = Client.objects.all().last()
-                return Response(f"ID: {new_created_client.pk}")
+                return Response(f"id: {new_created_client.pk}")
 
         return Response(f"Error of data validation: {serializer.errors}")
 
 
 # class ClientList(generics.CreateAPIView):
 # TODO change ListCreateAPIView to CreateAPIView
-class ClientList(generics.ListCreateAPIView):
-    """
-    Add new client by new name and date of create account
-    """
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
-
-    # def get(self, request, *args, **kwargs):
-    #     return Response(f"forbidden request!")
-
-    def post(self, request, *args, **kwargs):
-        serializer = ClientSerializer(data=request.data)
-        if serializer.is_valid():
-            client_n = serializer.validated_data['client_name']
-            client_d_cr = serializer.validated_data['createdAt']
-
-            client = Client.objects.filter(client_name=client_n)
-            if client:
-                client_from_db = client.first()
-                client_nn = client_from_db.client_name
-                client_date_reg = client_from_db.createdAt
-                if client_nn == client_n and client_date_reg == client_d_cr:
-                    return Response(f"Client ID is exist")
-            else:
-                serializer.save()
-                last_client = Client.objects.all().last()
-                return Response(f"ID: {last_client.pk}")
-
-        return Response(f"Error of data validation: {serializer.errors}")
+# class ClientList(generics.ListCreateAPIView):
+#     """
+#     Add new client by new name and date of create account
+#     """
+#     queryset = Client.objects.all()
+#     serializer_class = ClientSerializer
+#
+#     # def get(self, request, *args, **kwargs):
+#     #     return Response(f"forbidden request!")
+#
+#     def post(self, request, *args, **kwargs):
+#         serializer = ClientSerializer(data=request.data)
+#         if serializer.is_valid():
+#             client_n = serializer.validated_data['client_name']
+#             client_d_cr = serializer.validated_data['createdAt']
+#
+#             client = Client.objects.filter(client_name=client_n)
+#             if client:
+#                 client_from_db = client.first()
+#                 client_nn = client_from_db.client_name
+#                 client_date_reg = client_from_db.createdAt
+#                 if client_nn == client_n and client_date_reg == client_d_cr:
+#                     return Response(f"Client ID is exist")
+#             else:
+#                 serializer.save()
+#                 last_client = Client.objects.all().last()
+#                 return Response(f"ID: {last_client.pk}")
+#
+#         return Response(f"Error of data validation: {serializer.errors}")
 
 
 # class ClientDeleteClientSleeps(generics.UpdateAPIView):
@@ -122,6 +122,8 @@ class ClientDeleteClientSleeps(generics.RetrieveUpdateAPIView):
         return Response("Client doesn't exist!")
 
 
+# class ClientDeleteClientSleeps(generics.UpdateAPIView):
+# TODO change RetrieveUpdateAPIView to UpdateAPIView
 class ClientAddSleeps(generics.RetrieveUpdateAPIView):
     """
     Add sleeps to client

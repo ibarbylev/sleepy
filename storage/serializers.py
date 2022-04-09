@@ -21,51 +21,51 @@ class SleepSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     sleeps = SleepSerializer(many=True)
 
-    def create(self, validated_data):
-        sleeps_data = validated_data.pop('sleeps')
-        sleeps = []
-        if sleeps_data:
-            for sleep_data in sleeps_data:
-                print(sleep_data)
-                sleep = Sleep(
-                    startRoutineTime=sleep_data.get('startRoutineTime'),
-                    startFallingAsleepTime=sleep_data.get('startFallingAsleepTime'),
-                    finishTime=sleep_data.get('finishTime'),
-                    isItNightSleep=sleep_data.get('isItNightSleep', False),
-                    place=sleep_data.get('place'),
-                    moodStartOfSleep=sleep_data.get('moodStartOfSleep'),
-                    moodEndOfSleep=sleep_data.get('moodEndOfSleep')
-                )
-                sleep.save()
-
-                segments_data = sleep_data.pop('segments')
-                if segments_data:
-                    segments = []
-                    for segment_data in segments_data:
-                        segment = Segment(
-                            start=segment_data.get('start'),
-                            finish=segment_data.get('finish'),
-                            length=segment_data.get('length'),
-                            lengthHM=segment_data.get('lengthHM')
-                        )
-                        segment.save()
-                        segments.append(segment)
-
-                    sleep.segments.set(segments)
-                    sleep.save()
-
-                sleeps.append(sleep)
-
-        client = Client(
-            client_name=validated_data.get('client_name'),
-            birthdate=validated_data.get('birthdate'),
-            createdAt=validated_data.get('createdAt'),
-        )
-        client.save()
-        client.sleeps.set(sleeps)
-
-        client.save()
-        return client
+    # def create(self, validated_data):
+    #     sleeps_data = validated_data.pop('sleeps')
+    #     sleeps = []
+    #     if sleeps_data:
+    #         for sleep_data in sleeps_data:
+    #             print(sleep_data)
+    #             sleep = Sleep(
+    #                 startRoutineTime=sleep_data.get('startRoutineTime'),
+    #                 startFallingAsleepTime=sleep_data.get('startFallingAsleepTime'),
+    #                 finishTime=sleep_data.get('finishTime'),
+    #                 isItNightSleep=sleep_data.get('isItNightSleep', False),
+    #                 place=sleep_data.get('place'),
+    #                 moodStartOfSleep=sleep_data.get('moodStartOfSleep'),
+    #                 moodEndOfSleep=sleep_data.get('moodEndOfSleep')
+    #             )
+    #             sleep.save()
+    #
+    #             segments_data = sleep_data.pop('segments')
+    #             if segments_data:
+    #                 segments = []
+    #                 for segment_data in segments_data:
+    #                     segment = Segment(
+    #                         start=segment_data.get('start'),
+    #                         finish=segment_data.get('finish'),
+    #                         length=segment_data.get('length'),
+    #                         lengthHM=segment_data.get('lengthHM')
+    #                     )
+    #                     segment.save()
+    #                     segments.append(segment)
+    #
+    #                 sleep.segments.set(segments)
+    #                 sleep.save()
+    #
+    #             sleeps.append(sleep)
+    #
+    #     client = Client(
+    #         client_name=validated_data.get('client_name'),
+    #         birthdate=validated_data.get('birthdate'),
+    #         createdAt=validated_data.get('createdAt'),
+    #     )
+    #     client.save()
+    #     client.sleeps.set(sleeps)
+    #
+    #     client.save()
+    #     return client
 
     def update(self, instance, validated_data):
         sleeps_data = validated_data.pop('sleeps')
