@@ -1,10 +1,18 @@
 from datetime import datetime
 from rest_framework import serializers, permissions
 
-from storage.models import Client, Sleep
+from storage.models import Client, Sleep, Segment
+
+
+class SegmentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Segment
+        fields = '__all__'
 
 
 class SleepSerializer(serializers.ModelSerializer):
+    segments = SegmentSerializer(many=True)
+
     class Meta:
         model = Sleep
         fields = '__all__'
@@ -29,7 +37,20 @@ class ClientSerializer(serializers.ModelSerializer):
                     moodEndOfSleep=sleep_data.get('moodEndOfSleep')
                 )
                 sleep.save()
-                # sleep.segments.set()
+
+                segments_data = sleep_data.pop('segments')
+                segments = []
+                for segment_data in segments_data:
+                    segment = Segment(
+                        start=segment_data.get('start'),
+                        finish=segment_data.get('finish'),
+                        length=segment_data.get('length'),
+                        lengthHM=segment_data.get('lengthHM')
+                    )
+                    segment.save()
+                    segments.append(segment)
+
+                sleep.segments.set(segments)
                 sleep.save()
 
                 sleeps.append(sleep)

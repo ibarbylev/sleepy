@@ -60,36 +60,57 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
 
 """
 http://127.0.0.1:8000/api/is_exist/
-[
     {
-        "id": 13,
-        "client_name": "aaaA",
+        "id": 2,
+        "client_name": "aaaB",
         "birthdate": "2021-11-09T14:00:00+02:00",
         "createdAt": "2021-11-09T14:00:00+02:00",
         "sleeps": [
             {
-             "startRoutineTime":  "2022-03-22T13:13:28+01:00",
-             "startFallingAsleepTime": "2022-03-22T13:13:28+01:00"
+                "id": 3,
+                "segments": [
+                    {
+                        "id": 1,
+                        "start": "2022-04-09T15:18:39+03:00",
+                        "finish": "2022-04-09T15:18:41+03:00",
+                        "length": 1,
+                        "lengthHM": "0:01"
+                    }
+                ],
+                "startRoutineTime": "2022-04-08T05:06:26+03:00",
+                "startFallingAsleepTime": "2022-04-08T05:06:28+03:00",
+                "finishTime": "2022-04-08T05:06:56+03:00",
+                "isItNightSleep": false,
+                "place": "Place 3",
+                "moodStartOfSleep": "Place 3",
+                "moodEndOfSleep": "Place 3"
             },
             {
-             "startRoutineTime":  "2022-03-22T13:13:28+01:00",
-             "startFallingAsleepTime": "2022-03-22T13:13:28+01:00"
+                "id": 4,
+                "segments": [
+                    {
+                        "id": 1,
+                        "start": "2022-04-09T15:18:39+03:00",
+                        "finish": "2022-04-09T15:18:41+03:00",
+                        "length": 1,
+                        "lengthHM": "0:01"
+                    },
+                    {
+                        "id": 2,
+                        "start": "2022-04-09T15:35:44+03:00",
+                        "finish": "2022-04-09T15:35:47+03:00",
+                        "length": 3,
+                        "lengthHM": "00:03"
+                    }
+                ],
+                "startRoutineTime": "2022-04-08T05:09:10+03:00",
+                "startFallingAsleepTime": "2022-04-08T05:09:11+03:00",
+                "finishTime": "2022-04-08T05:09:14+03:00",
+                "isItNightSleep": false,
+                "place": "Place 4",
+                "moodStartOfSleep": "Place 4",
+                "moodEndOfSleep": "Place 4"
             }
         ]
-    },
-    {
-        "id": 14,
-        "client_name": "aaaAAA",
-        "birthdate": "2019-11-09T14:00:00+02:00",
-        "createdAt": "2021-11-09T14:00:00+02:00",
-        "sleeps": null
-    },
-    {
-        "id": 15,
-        "client_name": "aaaAAA",
-        "birthdate": "2019-11-09T14:00:00+02:00",
-        "createdAt": "2022-11-09T14:00:00+02:00",
-        "sleeps": null
     }
-]
 """

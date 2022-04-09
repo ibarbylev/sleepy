@@ -7,6 +7,9 @@ class Segment(models.Model):
     length = models.PositiveIntegerField(default=0)
     lengthHM = models.CharField(max_length=255, blank=True, null=True)
 
+    class Meta:
+        ordering = ['pk']
+
     def __str__(self):
         return f'{self.start} - {self.finish} / {self.finish-self.start}'
 
@@ -25,12 +28,21 @@ class Sleep(models.Model):
     moodStartOfSleep = models.CharField(max_length=255)
     moodEndOfSleep = models.CharField(max_length=255)
 
+    class Meta:
+        ordering = ['pk']
+
+    def __str__(self):
+        return f'{self.place} {self.startRoutineTime} {self.startFallingAsleepTime}'
+
 
 class Client(models.Model):
     client_name = models.CharField(max_length=200)
     birthdate = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     createdAt = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     sleeps = models.ManyToManyField(Sleep, blank=True)
+
+    class Meta:
+        ordering = ['pk']
 
     def __str__(self):
         return f'{self.client_name} {self.birthdate}'
