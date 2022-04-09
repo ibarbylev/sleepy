@@ -39,19 +39,20 @@ class ClientSerializer(serializers.ModelSerializer):
                 sleep.save()
 
                 segments_data = sleep_data.pop('segments')
-                segments = []
-                for segment_data in segments_data:
-                    segment = Segment(
-                        start=segment_data.get('start'),
-                        finish=segment_data.get('finish'),
-                        length=segment_data.get('length'),
-                        lengthHM=segment_data.get('lengthHM')
-                    )
-                    segment.save()
-                    segments.append(segment)
+                if segments_data:
+                    segments = []
+                    for segment_data in segments_data:
+                        segment = Segment(
+                            start=segment_data.get('start'),
+                            finish=segment_data.get('finish'),
+                            length=segment_data.get('length'),
+                            lengthHM=segment_data.get('lengthHM')
+                        )
+                        segment.save()
+                        segments.append(segment)
 
-                sleep.segments.set(segments)
-                sleep.save()
+                    sleep.segments.set(segments)
+                    sleep.save()
 
                 sleeps.append(sleep)
 
@@ -67,7 +68,8 @@ class ClientSerializer(serializers.ModelSerializer):
         return client
 
     def update(self, instance, validated_data):
-        pass
+        client = instance
+        return instance
 
     class Meta:
         model = Client

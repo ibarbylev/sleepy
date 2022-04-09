@@ -12,7 +12,11 @@ def index_view(request):
 
 
 # class ClientList(generics.CreateAPIView):
+# TODO change ListCreateAPIView to CreateAPIView
 class ClientList(generics.ListCreateAPIView):
+    """
+    Add new client by new name and date of create account
+    """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
@@ -40,9 +44,34 @@ class ClientList(generics.ListCreateAPIView):
         return Response(f"Error of data validation: {serializer.errors}")
 
 
-class ClientDetail(generics.RetrieveUpdateDestroyAPIView):
+# class ClientDeleteClientSleeps(generics.UpdateAPIView):
+# TODO change RetrieveUpdateAPIView to UpdateAPIView
+class ClientDeleteClientSleeps(generics.RetrieveUpdateAPIView):
+    """
+    Delete all sleeps and its dependent segments for signed client
+    """
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
+
+    def get(self, request, pk,  *args, **kwargs):
+        print('pk =', pk)
+        return self.retrieve(request, *args, **kwargs)
+
+    def put(self, request, pk, *args, **kwargs):
+        if Client.objects.filter(pk=pk):
+            client = Client.objects.get(pk=pk)
+            serializer = ClientSerializer(client, data=request.data)
+            if serializer.is_valid():
+                client_n = serializer.validated_data['client_name']
+                if client_n != client.client_name:
+                    return Response(f"Error in name for client.id={pk}")
+
+                [sg.delete() for sleep in client.sleeps.all() for sg in sleep.segments.all()]
+                [sleep.delete() for sleep in client.sleeps.all()]
+
+            return self.update(request, *args, **kwargs)
+
+        return Response("Client doesn't exist!")
 
 
 class ClientAddSleeps(generics.RetrieveUpdateAPIView):
