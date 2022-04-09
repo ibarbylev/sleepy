@@ -28,7 +28,7 @@ Algorithm:
                        --> delete all sleeps (and segments) for current client
     2. Otherwise --> return "Error in name for client.id={pk}"
 
-3. ADD SLEEPS TO CLIENT (PUT request to url 'api/delete-sleeps/client_id' with JSON)
+3. ADD SLEEPS TO CLIENT (PUT request to url 'api/add-sleeps/client_id' with JSON)
 
         required fields:
     {

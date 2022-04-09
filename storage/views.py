@@ -111,13 +111,15 @@ class ClientDeleteClientSleeps(generics.RetrieveUpdateAPIView):
             serializer = ClientSerializer(client, data=request.data)
             if serializer.is_valid():
                 client_n = serializer.validated_data['client_name']
-                if client_n != client.client_name:
-                    return Response(f"Error in name for client.id={pk}")
+                client_d_cr = serializer.validated_data['createdAt']
+
+                if client_n != client.client_name and client.createdAt == client_d_cr:
+                    return Response(f"Error in name and/or data_of_creation for client.id={pk}")
 
                 [sg.delete() for sleep in client.sleeps.all() for sg in sleep.segments.all()]
                 [sleep.delete() for sleep in client.sleeps.all()]
 
-            return self.update(request, *args, **kwargs)
+            return self.get(request, pk, *args, **kwargs)
 
         return Response("Client doesn't exist!")
 
@@ -136,7 +138,7 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
         if serializer.is_valid():
             if check_is_client_exists(serializer, pk):
                 client = Client.objects.get(pk=pk)
-                if client.sleeps:
+                if client.sleeps.all():
                     return Response(f"Mistake! You must clear old data before uploading new ones!")
 
                 return self.update(request, *args, **kwargs)

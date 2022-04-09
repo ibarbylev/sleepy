@@ -21,6 +21,14 @@ class SleepSerializer(serializers.ModelSerializer):
 class ClientSerializer(serializers.ModelSerializer):
     sleeps = SleepSerializer(many=True)
 
+    def create(self, validated_data):
+        client = Client(
+            client_name=validated_data.get('client_name'),
+            birthdate=validated_data.get('birthdate'),
+            createdAt=validated_data.get('createdAt'),
+            )
+        client.save()
+        return client
     # def create(self, validated_data):
     #     sleeps_data = validated_data.pop('sleeps')
     #     sleeps = []
