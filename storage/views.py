@@ -19,12 +19,9 @@ def check_is_client_exists(serializer, pk=None):
     client_n = serializer.validated_data['client_name']
     client_d_cr = serializer.validated_data['createdAt']
 
-    client = Client.objects.filter(client_name=client_n)
+    client = Client.objects.filter(client_name=client_n).first()
     if client:
-        client_from_db = client.first()
-        client_nn = client_from_db.client_name
-        client_date_reg = client_from_db.createdAt
-        if client_nn == client_n and client_date_reg == client_d_cr:
+        if client.client_name == client_n and client.createdAt == client_d_cr:
             if pk is None:
                 return True
             else:
@@ -132,10 +129,19 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
     queryset = Client.objects.all()
     serializer_class = ClientSerializer
 
-    def post(self, request, *args, **kwargs):
+    def put(self, request, pk, *args, **kwargs):
         serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
-            pass
+            if check_is_client_exists(serializer, pk):
+                client = Client.objects.get(pk=pk)
+                if client.sleeps:
+                    return Response(f"Mistake! You must clear old data before uploading new ones!")
+
+                return self.update(request, *args, **kwargs)
+
+            return Response(f"Client not found!")
+
+        return Response(f"Error of data validation: {serializer.errors}")
 
 
 """

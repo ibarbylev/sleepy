@@ -45,5 +45,5 @@ class Client(models.Model):
         ordering = ['pk']
 
     def __str__(self):
-        return f'{self.client_name} {self.birthdate}'
+        return f'{self.client_name} {self.pk} {self.birthdate}'
 
