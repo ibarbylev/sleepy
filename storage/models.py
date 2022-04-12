@@ -24,9 +24,9 @@ class Sleep(models.Model):
     segments = models.ManyToManyField(Segment, blank=True)
     finishTime = models.DateTimeField()
     isItNightSleep = models.BooleanField(default=False)
-    place = models.CharField(max_length=255)
-    moodStartOfSleep = models.CharField(max_length=255)
-    moodEndOfSleep = models.CharField(max_length=255)
+    place = models.CharField(max_length=255, blank=True, null=True)
+    moodStartOfSleep = models.CharField(max_length=255, blank=True, null=True)
+    moodEndOfSleep = models.CharField(max_length=255, blank=True, null=True)
 
     class Meta:
         ordering = ['pk']

@@ -19,7 +19,7 @@ class SleepSerializer(serializers.ModelSerializer):
 
 
 class ClientSerializer(serializers.ModelSerializer):
-    sleeps = SleepSerializer(many=True)
+    sleeps = SleepSerializer(many=True, required=False, default=[])
 
     def create(self, validated_data):
         client = Client(
