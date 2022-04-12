@@ -4,7 +4,7 @@ from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
 from .models import Client
-from .serializers import ClientSerializer
+from .serializers import ClientSerializer, ClientSerializerForReturnID
 
 
 def index_view(request):
@@ -54,7 +54,9 @@ class ClientIsExists(generics.ListCreateAPIView):
             else:
                 serializer.save()
                 new_created_client = Client.objects.all().last()
-                return Response(f"id: {new_created_client.pk}")
+                # return Response(f"id: {new_created_client.pk}")
+                new_serializer = ClientSerializerForReturnID(new_created_client)
+                return Response(new_serializer.data)
 
         return Response(f"Error of data validation: {serializer.errors}")
 

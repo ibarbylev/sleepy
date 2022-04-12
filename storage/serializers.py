@@ -18,6 +18,12 @@ class SleepSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class ClientSerializerForReturnID(serializers.ModelSerializer):
+    class Meta:
+        model = Sleep
+        fields = ['id']
+
+
 class ClientSerializer(serializers.ModelSerializer):
     sleeps = SleepSerializer(many=True, required=False, default=[])
 
