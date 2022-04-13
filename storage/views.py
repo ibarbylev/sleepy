@@ -23,12 +23,7 @@ def check_is_client_exists(serializer, pk=None):
                                    createdAt=client_d_cr,
                                    ).first()
     if client:
-        if client.client_name == client_n and client.createdAt == client_d_cr:
-            if pk is None:
-                return True
-            else:
-                if client.pk == pk:
-                    return True
+        return True
 
 
 # class ClientList(generics.CreateAPIView):
