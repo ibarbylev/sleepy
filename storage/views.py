@@ -19,7 +19,9 @@ def check_is_client_exists(serializer, pk=None):
     client_n = serializer.validated_data['client_name']
     client_d_cr = serializer.validated_data['createdAt']
 
-    client = Client.objects.filter(client_name=client_n).first()
+    client = Client.objects.filter(client_name=client_n,
+                                   createdAt=client_d_cr,
+                                   ).first()
     if client:
         if client.client_name == client_n and client.createdAt == client_d_cr:
             if pk is None:
