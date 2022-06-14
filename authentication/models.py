@@ -27,7 +27,7 @@ class User(AbstractBaseUser):
         (ROLE_ADMIN, _("Admin")),
         (ROLE_MANAGER, _("Manager")),
         (ROLE_CLIENT, _("Client")),
-        (ROLE_CONSULTANT, _("consultant")),
+        (ROLE_CONSULTANT, _("Consultant")),
     ]
 
     username = models.CharField(max_length=255, unique=True)
