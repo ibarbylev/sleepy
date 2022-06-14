@@ -8,6 +8,17 @@ class Language(models.Model):
 
 
 class User(AbstractBaseUser):
+    USERNAME_FIELD = 'username'
+    EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['email']
+    FIELDS_REQUIRED_FOR_CHECKOUT = [
+        'username',
+        'email',
+        # 'first_name',
+        # 'patronymic',
+        # 'surname',
+    ]
+
     ROLE_ADMIN = 'admin'
     ROLE_MANAGER = 'manager'
     ROLE_CLIENT = 'client'
