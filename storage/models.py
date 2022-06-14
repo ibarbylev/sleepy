@@ -1,4 +1,5 @@
 from django.db import models
+from authentication.models import User
 
 
 class Segment(models.Model):
@@ -40,6 +41,7 @@ class Client(models.Model):
     birthdate = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     createdAt = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     sleeps = models.ManyToManyField(Sleep, blank=True)
+    consultant = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT)
 
     class Meta:
         ordering = ['pk']

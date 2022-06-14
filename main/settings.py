@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     # --- my apps ---
     'storage',
+    'authentication',
 
     # --- additional apps ---
     'rest_framework',
