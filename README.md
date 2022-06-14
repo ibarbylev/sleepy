@@ -1,5 +1,17 @@
 # sleepy
 
+
+### IMPORTANT!!!
+For run shell in PyCharm Python Console must do next:
+```
+import os
+import django
+
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'main.settings')
+django.setup()
+```
+In other words, it's the same as running ```python manage.py shell```  in the terminal window, but only MUCH MORE convenient!))) 
+
 Algorithm:
 
 1. CHECK IF CLIENT EXISTS (POST request to url 'api/is_exist/' with JSON
@@ -41,3 +53,6 @@ Algorithm:
       2. Otherwise --> return "Mistake! You must clear old data before uploading new ones!"
    2. Otherwise --> return "Client not found!"
    
+4. GET LIST OF CONSULTANTS (GET request to url 'api/add-sleeps/client_id')
+
+5. 

@@ -3,8 +3,9 @@ from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
+from authentication.models import User
 from .models import Client
-from .serializers import ClientSerializer, ClientSerializerForReturnID
+from .serializers import ClientSerializer, ClientSerializerForReturnID, ConsultantSerializer
 
 
 def index_view(request):
@@ -145,6 +146,11 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
             return Response(f"Client not found!")
 
         return Response(f"Error of data validation: {serializer.errors}")
+
+
+class ConsultantList(generics.ListAPIView):
+    queryset = User.objects.filter(role__in=[User.ROLE_CONSULTANT])
+    serializer_class = ConsultantSerializer
 
 
 """

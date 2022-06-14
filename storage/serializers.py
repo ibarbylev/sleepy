@@ -2,6 +2,7 @@ from datetime import datetime
 from rest_framework import serializers, permissions
 
 from storage.models import Client, Sleep, Segment
+from authentication.models import User
 
 
 class SegmentSerializer(serializers.ModelSerializer):
@@ -124,7 +125,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['id', 'client_name', 'birthdate', 'createdAt', 'sleeps']
+        fields = ['id', 'client_name', 'birthdate', 'createdAt', 'consultant', 'sleeps']
 
     def validate_birthdate(self, value):
         """
@@ -190,3 +191,9 @@ class ClientSerializer(serializers.ModelSerializer):
     #     profile.save()
     #
     #     return instance
+
+
+class ConsultantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = '__all__'

@@ -40,8 +40,8 @@ class Client(models.Model):
     client_name = models.CharField(max_length=200)
     birthdate = models.DateTimeField(auto_now_add=False, blank=True, null=True)
     createdAt = models.DateTimeField(auto_now_add=False, blank=True, null=True)
-    sleeps = models.ManyToManyField(Sleep, blank=True)
     consultant = models.ForeignKey(User, blank=True, null=True, on_delete=models.PROTECT)
+    sleeps = models.ManyToManyField(Sleep, blank=True)
 
     class Meta:
         ordering = ['pk']
