@@ -149,7 +149,7 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
 
 
 class ConsultantList(generics.ListAPIView):
-    queryset = User.objects.filter(role__in=[User.ROLE_CONSULTANT])
+    queryset = User.objects.filter(role__in=[User.ROLE_CONSULTANT], enable=True)
     serializer_class = ConsultantSerializer
 
 

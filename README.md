@@ -53,6 +53,5 @@ Algorithm:
       2. Otherwise --> return "Mistake! You must clear old data before uploading new ones!"
    2. Otherwise --> return "Client not found!"
    
-4. GET LIST OF CONSULTANTS (GET request to url 'api/add-sleeps/client_id')
-
-5. 
+4. GET LIST OF CONSULTANTS (GET request to url 'api/consultants')
+    IMPORTANT! The consultant must be: enable=True
