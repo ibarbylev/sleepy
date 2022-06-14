@@ -2,7 +2,7 @@ from datetime import datetime
 from rest_framework import serializers, permissions
 
 from storage.models import Client, Sleep, Segment
-from authentication.models import User
+from authentication.models import User, Language
 
 
 class SegmentSerializer(serializers.ModelSerializer):
@@ -196,4 +196,11 @@ class ClientSerializer(serializers.ModelSerializer):
 class ConsultantSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
+        fields = ('email', 'langs', 'first_name', 'patronymic',
+                  'surname', 'phone', 'photo', 'note')
+
+
+class LanguageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Language
         fields = '__all__'

@@ -3,9 +3,10 @@ from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
-from authentication.models import User
+from authentication.models import User, Language
 from .models import Client
-from .serializers import ClientSerializer, ClientSerializerForReturnID, ConsultantSerializer
+from .serializers import ClientSerializer, ClientSerializerForReturnID, ConsultantSerializer, \
+    LanguageSerializer
 
 
 def index_view(request):
@@ -151,6 +152,11 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
 class ConsultantList(generics.ListAPIView):
     queryset = User.objects.filter(role__in=[User.ROLE_CONSULTANT], enable=True)
     serializer_class = ConsultantSerializer
+
+
+class LanguageList(generics.ListAPIView):
+    queryset = Language.objects.all()
+    serializer_class = LanguageSerializer
 
 
 """

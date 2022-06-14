@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/delete-sleeps/<int:pk>/', views.ClientDeleteClientSleeps.as_view()),  # method PUT
     path('api/add-sleeps/<int:pk>/', views.ClientAddSleeps.as_view()),  # method PUT
     path('api/consultants/', views.ConsultantList.as_view()),  # method GET
+    path('api/languages/', views.LanguageList.as_view()),  # method GET
 ]
 
 if settings.DEBUG:

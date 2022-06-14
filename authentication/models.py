@@ -6,6 +6,18 @@ from django.utils.translation import gettext_lazy as _
 class Language(models.Model):
     lang = models.CharField(max_length=2, unique=True)
 
+    def __str__(self) -> str:
+        return f'{self.lang}'
+
+    def save(self, *args, **kwargs):
+        self.lang = self.lang.upper()
+        super().save(*args, **kwargs)
+
+    class Meta:
+        verbose_name = _('Language')
+        verbose_name_plural = _('Languages')
+        ordering = ['lang']
+
 
 class User(AbstractBaseUser):
     USERNAME_FIELD = 'username'

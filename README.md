@@ -55,3 +55,6 @@ Algorithm:
    
 4. GET LIST OF CONSULTANTS (GET request to url 'api/consultants')
     IMPORTANT! The consultant must be: enable=True
+
+5. GET LIST OF LANGUAGES (GET request to url 'api/languages')
+    IMPORTANT! The consultant must be: enable=True
