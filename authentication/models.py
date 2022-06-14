@@ -82,6 +82,14 @@ class User(AbstractBaseUser):
     def is_consultant(self) -> bool:
         return self.role == self.ROLE_MANAGER
 
+    # def save(self, *args, **kwargs):
+    #     if not User.objects.filter(username=self.username):
+    #         u = User.objects.create(username=self.username,
+    #                                 email=self.username,
+    #                                 password=None)
+    #         u.set_password(self.password)
+    #     super().save(*args, **kwargs)
+
     class Meta:
         verbose_name = _('User')
         verbose_name_plural = _('Users')
