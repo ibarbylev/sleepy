@@ -2,7 +2,7 @@ from datetime import datetime
 from rest_framework import serializers, permissions
 
 from storage.models import Client, Sleep, Segment
-from authentication.models import User, Language
+from authentication.models import UserProfile, Language
 
 
 class SegmentSerializer(serializers.ModelSerializer):
@@ -87,35 +87,37 @@ class ClientSerializer(serializers.ModelSerializer):
         sleeps = []
         if sleeps_data:
             for sleep_data in sleeps_data:
-                print(sleep_data)
-                sleep = Sleep(
-                    startRoutineTime=sleep_data.get('startRoutineTime'),
-                    startFallingAsleepTime=sleep_data.get('startFallingAsleepTime'),
-                    finishTime=sleep_data.get('finishTime'),
-                    isItNightSleep=sleep_data.get('isItNightSleep', False),
-                    place=sleep_data.get('place'),
-                    moodStartOfSleep=sleep_data.get('moodStartOfSleep'),
-                    moodEndOfSleep=sleep_data.get('moodEndOfSleep')
-                )
-                sleep.save()
-
-                segments_data = sleep_data.pop('segments')
-                if segments_data:
-                    segments = []
-                    for segment_data in segments_data:
-                        segment = Segment(
-                            start=segment_data.get('start'),
-                            finish=segment_data.get('finish'),
-                            length=segment_data.get('length'),
-                            lengthHM=segment_data.get('lengthHM')
-                        )
-                        segment.save()
-                        segments.append(segment)
-
-                    sleep.segments.set(segments)
+                if sleep_data.get('locked'):
+                    sleep = Sleep(
+                        locked=sleep_data.get('locked'),
+                        note=sleep_data.get('note'),
+                        startRoutineTime=sleep_data.get('startRoutineTime'),
+                        startFallingAsleepTime=sleep_data.get('startFallingAsleepTime'),
+                        finishTime=sleep_data.get('finishTime'),
+                        isItNightSleep=sleep_data.get('isItNightSleep', False),
+                        place=sleep_data.get('place'),
+                        moodStartOfSleep=sleep_data.get('moodStartOfSleep'),
+                        moodEndOfSleep=sleep_data.get('moodEndOfSleep')
+                    )
                     sleep.save()
 
-                sleeps.append(sleep)
+                    segments_data = sleep_data.pop('segments')
+                    if segments_data:
+                        segments = []
+                        for segment_data in segments_data:
+                            segment = Segment(
+                                start=segment_data.get('start'),
+                                finish=segment_data.get('finish'),
+                                length=segment_data.get('length'),
+                                lengthHM=segment_data.get('lengthHM')
+                            )
+                            segment.save()
+                            segments.append(segment)
+
+                        sleep.segments.set(segments)
+                        sleep.save()
+
+                    sleeps.append(sleep)
 
         client = instance
         client.sleeps.set(sleeps)
@@ -195,7 +197,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
 class ConsultantSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = UserProfile
         fields = ('email', 'langs', 'first_name', 'patronymic',
                   'surname', 'phone', 'photo', 'note')
 

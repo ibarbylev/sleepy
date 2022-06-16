@@ -20,6 +20,8 @@ class Segment(models.Model):
 
 
 class Sleep(models.Model):
+    locked = models.BooleanField(default=False)
+    note = models.TextField(default='', blank=True, null=True)
     startRoutineTime = models.DateTimeField()
     startFallingAsleepTime = models.DateTimeField()
     segments = models.ManyToManyField(Segment, blank=True)

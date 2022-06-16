@@ -1,6 +1,6 @@
 from django.contrib import admin
-from authentication.models import User, Language
+from authentication.models import UserProfile, Language
 
 
 admin.site.register(Language)
-admin.site.register(User)
+admin.site.register(UserProfile)

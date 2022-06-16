@@ -1,4 +1,5 @@
-from django.contrib.auth.base_user import AbstractBaseUser
+from django.contrib.auth.base_user import AbstractBaseUser, BaseUserManager
+from django.contrib.auth.models import User
 from django.db import models
 from django.utils.translation import gettext_lazy as _
 
@@ -19,18 +20,7 @@ class Language(models.Model):
         ordering = ['lang']
 
 
-class User(AbstractBaseUser):
-    USERNAME_FIELD = 'username'
-    EMAIL_FIELD = 'email'
-    REQUIRED_FIELDS = ['email']
-    FIELDS_REQUIRED_FOR_CHECKOUT = [
-        'username',
-        'email',
-        # 'first_name',
-        # 'patronymic',
-        # 'surname',
-    ]
-
+class UserProfile(models.Model):
     ROLE_ADMIN = 'admin'
     ROLE_MANAGER = 'manager'
     ROLE_CLIENT = 'client'
@@ -42,25 +32,16 @@ class User(AbstractBaseUser):
         (ROLE_CONSULTANT, _("Consultant")),
     ]
 
-    username = models.CharField(max_length=255, unique=True)
-    email = models.CharField(max_length=255, unique=True)
-    role = models.CharField(max_length=64, choices=ROLE_CHOICES, default=ROLE_CLIENT)
-    is_confirmed = models.BooleanField(default=False, verbose_name=_('is confirmed'))
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    role = models.CharField(max_length=255, choices=ROLE_CHOICES, default=ROLE_CLIENT)
     created_at = models.DateTimeField(auto_now_add=True, verbose_name=_('created at'))
     langs = models.ManyToManyField(Language, blank=True, verbose_name=_('languages'))
-
-    first_name = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('first name'))
-    patronymic = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('patronymic'))
-    surname = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('surname'))
     date_of_birth = models.DateTimeField(null=True, blank=True, verbose_name=_('date of birth'))
     address = models.TextField(null=True, blank=True, verbose_name=_('address'))
     phone = models.CharField(max_length=255, null=True, blank=True, verbose_name=_('phone number'))
     photo = models.ImageField(upload_to='images', null=True, blank=True, verbose_name=_('user photo'))
     note = models.TextField(null=True, blank=True)
     enable = models.BooleanField(null=True, blank=True)
-
-    def __str__(self) -> str:
-        return f'{self.first_name} {self.surname}'
 
     @property
     def is_superuser(self) -> bool:
@@ -82,17 +63,9 @@ class User(AbstractBaseUser):
     def is_consultant(self) -> bool:
         return self.role == self.ROLE_MANAGER
 
-    # def save(self, *args, **kwargs):
-    #     if not User.objects.filter(username=self.username):
-    #         u = User.objects.create(username=self.username,
-    #                                 email=self.username,
-    #                                 password=None)
-    #         u.set_password(self.password)
-    #     super().save(*args, **kwargs)
-
     class Meta:
-        verbose_name = _('User')
-        verbose_name_plural = _('Users')
+        verbose_name = _('UserProfile')
+        verbose_name_plural = _('UserProfiles')
         ordering = ['-id']
 
 

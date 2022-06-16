@@ -3,7 +3,7 @@ from rest_framework import generics
 from rest_framework.parsers import JSONParser
 from rest_framework.response import Response
 
-from authentication.models import User, Language
+from authentication.models import UserProfile, Language
 from .models import Client
 from .serializers import ClientSerializer, ClientSerializerForReturnID, ConsultantSerializer, \
     LanguageSerializer
@@ -150,7 +150,7 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
 
 
 class ConsultantList(generics.ListAPIView):
-    queryset = User.objects.filter(role__in=[User.ROLE_CONSULTANT], enable=True)
+    queryset = UserProfile.objects.filter(role__in=[UserProfile.ROLE_CONSULTANT], enable=True)
     serializer_class = ConsultantSerializer
 
 
@@ -166,9 +166,12 @@ http://127.0.0.1:8000/api/is_exist/
         "client_name": "aaaB",
         "birthdate": "2021-11-09T14:00:00+02:00",
         "createdAt": "2021-11-09T14:00:00+02:00",
+        "consultant": null,
         "sleeps": [
             {
                 "id": 3,
+                "locked": true,
+                "note": null,
                 "segments": [
                     {
                         "id": 1,
@@ -188,6 +191,8 @@ http://127.0.0.1:8000/api/is_exist/
             },
             {
                 "id": 4,
+                "locked": true,
+                "note": null,
                 "segments": [
                     {
                         "id": 1,
