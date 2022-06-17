@@ -1,19 +1,14 @@
 from django.contrib import admin
 from django.urls import path, include
-from storage import views
 from django.conf.urls.static import static
 from django.conf import settings
+from storage.views import index_view
 
 
 urlpatterns = [
-    path('', include('storage.urls')),
+    path('', index_view, name='index'),
+    path('api/', include('storage.urls')),
     path('admin/', admin.site.urls),
-    # path('api/is_exist/', views.ClientList.as_view()),
-    path('api/is_exist/', views.ClientIsExists.as_view()),  # method POST
-    path('api/delete-sleeps/<int:pk>/', views.ClientDeleteClientSleeps.as_view()),  # method PUT
-    path('api/add-sleeps/<int:pk>/', views.ClientAddSleeps.as_view()),  # method PUT
-    path('api/consultants/', views.ConsultantList.as_view()),  # method GET
-    path('api/languages/', views.LanguageList.as_view()),  # method GET
 ]
 
 if settings.DEBUG:
