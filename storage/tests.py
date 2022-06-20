@@ -179,5 +179,6 @@ class TestRequestAPIaddSleeps(APITestCase):
         RESPONSE_CONTENT = b'{"id":1,"client_name":"aaaB","birthdate":"2021-11-09T14:00:00+02:00","createdAt":"2021-11-09T14:00:00+02:00","consultant":null,"sleeps":[{"id":1,"segments":[{"id":1,"start":"2022-04-09T15:18:39+03:00","finish":"2022-04-09T15:18:41+03:00","length":1,"lengthHM":"0:01"}],"locked":true,"note":null,"startRoutineTime":"2022-04-08T05:06:26+03:00","startFallingAsleepTime":"2022-04-08T05:06:28+03:00","finishTime":"2022-04-08T05:06:56+03:00","isItNightSleep":false,"place":"Place 3","moodStartOfSleep":"Place 3","moodEndOfSleep":"Place 3"},{"id":2,"segments":[{"id":2,"start":"2022-04-09T15:18:39+03:00","finish":"2022-04-09T15:18:41+03:00","length":1,"lengthHM":"0:01"},{"id":3,"start":"2022-04-09T15:35:44+03:00","finish":"2022-04-09T15:35:47+03:00","length":3,"lengthHM":"00:03"}],"locked":true,"note":null,"startRoutineTime":"2022-04-08T05:09:10+03:00","startFallingAsleepTime":"2022-04-08T05:09:11+03:00","finishTime":"2022-04-08T05:09:14+03:00","isItNightSleep":false,"place":"Place 4","moodStartOfSleep":"Place 4","moodEndOfSleep":"Place 4"}]}'
         self.assertEqual(response.content,  RESPONSE_CONTENT)
 
+        # 2. Add sleeps with only OLD data
 
 

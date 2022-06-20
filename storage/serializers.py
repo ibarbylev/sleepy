@@ -33,9 +33,10 @@ class ClientSerializer(serializers.ModelSerializer):
             client_name=validated_data.get('client_name'),
             birthdate=validated_data.get('birthdate'),
             createdAt=validated_data.get('createdAt'),
-            )
+        )
         client.save()
         return client
+
     # def create(self, validated_data):
     #     sleeps_data = validated_data.pop('sleeps')
     #     sleeps = []
@@ -84,40 +85,51 @@ class ClientSerializer(serializers.ModelSerializer):
 
     def update(self, instance, validated_data):
         sleeps_data = validated_data.pop('sleeps')
-        sleeps = []
+
+        # getting a list of already existing sleeps for the current client
+        sleeps = list(Sleep.objects.filter(client=instance))
+
         if sleeps_data:
             for sleep_data in sleeps_data:
                 if sleep_data.get('locked'):
-                    sleep = Sleep(
-                        locked=sleep_data.get('locked'),
-                        note=sleep_data.get('note'),
-                        startRoutineTime=sleep_data.get('startRoutineTime'),
-                        startFallingAsleepTime=sleep_data.get('startFallingAsleepTime'),
-                        finishTime=sleep_data.get('finishTime'),
-                        isItNightSleep=sleep_data.get('isItNightSleep', False),
-                        place=sleep_data.get('place'),
-                        moodStartOfSleep=sleep_data.get('moodStartOfSleep'),
-                        moodEndOfSleep=sleep_data.get('moodEndOfSleep')
-                    )
-                    sleep.save()
-
-                    segments_data = sleep_data.pop('segments')
-                    if segments_data:
-                        segments = []
-                        for segment_data in segments_data:
-                            segment = Segment(
-                                start=segment_data.get('start'),
-                                finish=segment_data.get('finish'),
-                                length=segment_data.get('length'),
-                                lengthHM=segment_data.get('lengthHM')
-                            )
-                            segment.save()
-                            segments.append(segment)
-
-                        sleep.segments.set(segments)
+                    # checking if the sleep already exists in the database
+                    found = False
+                    for sleep in sleeps:
+                        if sleep_data.get('startRoutineTime') == sleep.startRoutineTime \
+                                and sleep_data.get('finishTime') == sleep.finishTime:
+                            found = True
+                            break
+                    if not found:
+                        sleep = Sleep(
+                            locked=sleep_data.get('locked'),
+                            note=sleep_data.get('note'),
+                            startRoutineTime=sleep_data.get('startRoutineTime'),
+                            startFallingAsleepTime=sleep_data.get('startFallingAsleepTime'),
+                            finishTime=sleep_data.get('finishTime'),
+                            isItNightSleep=sleep_data.get('isItNightSleep', False),
+                            place=sleep_data.get('place'),
+                            moodStartOfSleep=sleep_data.get('moodStartOfSleep'),
+                            moodEndOfSleep=sleep_data.get('moodEndOfSleep')
+                        )
                         sleep.save()
 
-                    sleeps.append(sleep)
+                        segments_data = sleep_data.pop('segments')
+                        if segments_data:
+                            segments = []
+                            for segment_data in segments_data:
+                                segment = Segment(
+                                    start=segment_data.get('start'),
+                                    finish=segment_data.get('finish'),
+                                    length=segment_data.get('length'),
+                                    lengthHM=segment_data.get('lengthHM')
+                                )
+                                segment.save()
+                                segments.append(segment)
+
+                            sleep.segments.set(segments)
+                            sleep.save()
+
+                        sleeps.append(sleep)
 
         client = instance
         client.sleeps.set(sleeps)
@@ -139,7 +151,8 @@ class ClientSerializer(serializers.ModelSerializer):
         past = datetime.fromisoformat("2015-01-01T00:00:00+01:00")
         future = datetime.fromisoformat("2052-01-01T00:00:00+01:00")
         if not (past < value < future):
-            raise serializers.ValidationError('birthdate must be between 01.01.2015 and 01.01.2052')
+            raise serializers.ValidationError(
+                'birthdate must be between 01.01.2015 and 01.01.2052')
         return value
 
     def validate_createdAt(self, value):
@@ -152,7 +165,8 @@ class ClientSerializer(serializers.ModelSerializer):
         past = datetime.fromisoformat("2021-01-01T00:00:00+01:00")
         future = datetime.fromisoformat("2052-01-01T00:00:00+01:00")
         if not (past < value < future):
-            raise serializers.ValidationError('createdAt must be between 01.01.2021 and 01.01.2052')
+            raise serializers.ValidationError(
+                'createdAt must be between 01.01.2021 and 01.01.2052')
         return value
 
     # def validate(self, attrs):

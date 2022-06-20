@@ -138,9 +138,9 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
         serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
             if check_is_client_exists(serializer, pk):
-                client = Client.objects.get(pk=pk)
-                if client.sleeps.all():
-                    return Response(f"Mistake! You must clear old data before uploading new ones!")
+                # client = Client.objects.get(pk=pk)
+                # if client.sleeps.all():
+                #     return Response(f"Mistake! You must clear old data before uploading new ones!")
 
                 return self.update(request, *args, **kwargs)
 
