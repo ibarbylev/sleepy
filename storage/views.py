@@ -95,34 +95,34 @@ class ClientIsExists(generics.ListCreateAPIView):
 
 # class ClientDeleteClientSleeps(generics.UpdateAPIView):
 # TODO change RetrieveUpdateAPIView to UpdateAPIView
-class ClientDeleteClientSleeps(generics.RetrieveUpdateAPIView):
-    """
-    Delete all sleeps and its dependent segments for signed client
-    """
-    queryset = Client.objects.all()
-    serializer_class = ClientSerializer
-
-    def get(self, request, pk, *args, **kwargs):
-        print('pk =', pk)
-        return self.retrieve(request, *args, **kwargs)
-
-    def put(self, request, pk, *args, **kwargs):
-        if Client.objects.filter(pk=pk):
-            client = Client.objects.get(pk=pk)
-            serializer = ClientSerializer(client, data=request.data)
-            if serializer.is_valid():
-                client_n = serializer.validated_data['client_name']
-                client_d_cr = serializer.validated_data['createdAt']
-
-                if client_n != client.client_name and client.createdAt == client_d_cr:
-                    return Response(f"Error in name and/or data_of_creation for client.id={pk}")
-
-                [sg.delete() for sleep in client.sleeps.all() for sg in sleep.segments.all()]
-                [sleep.delete() for sleep in client.sleeps.all()]
-
-            return self.get(request, pk, *args, **kwargs)
-
-        return Response("Client doesn't exist!")
+# class ClientDeleteClientSleeps(generics.RetrieveUpdateAPIView):
+#     """
+#     Delete all sleeps and its dependent segments for signed client
+#     """
+#     queryset = Client.objects.all()
+#     serializer_class = ClientSerializer
+#
+#     def get(self, request, pk, *args, **kwargs):
+#         print('pk =', pk)
+#         return self.retrieve(request, *args, **kwargs)
+#
+#     def put(self, request, pk, *args, **kwargs):
+#         if Client.objects.filter(pk=pk):
+#             client = Client.objects.get(pk=pk)
+#             serializer = ClientSerializer(client, data=request.data)
+#             if serializer.is_valid():
+#                 client_n = serializer.validated_data['client_name']
+#                 client_d_cr = serializer.validated_data['createdAt']
+#
+#                 if client_n != client.client_name and client.createdAt == client_d_cr:
+#                     return Response(f"Error in name and/or data_of_creation for client.id={pk}")
+#
+#                 [sg.delete() for sleep in client.sleeps.all() for sg in sleep.segments.all()]
+#                 [sleep.delete() for sleep in client.sleeps.all()]
+#
+#             return self.get(request, pk, *args, **kwargs)
+#
+#         return Response("Client doesn't exist!")
 
 
 # class ClientDeleteClientSleeps(generics.UpdateAPIView):
@@ -138,10 +138,6 @@ class ClientAddSleeps(generics.RetrieveUpdateAPIView):
         serializer = ClientSerializer(data=request.data)
         if serializer.is_valid():
             if check_is_client_exists(serializer, pk):
-                # client = Client.objects.get(pk=pk)
-                # if client.sleeps.all():
-                #     return Response(f"Mistake! You must clear old data before uploading new ones!")
-
                 return self.update(request, *args, **kwargs)
 
             return Response(f"Client not found!")

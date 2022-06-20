@@ -29,32 +29,34 @@ Algorithm:
    3. If not (date_min < birthdate < date_max and date_min < createdAt < date_max)
                       --> return "Error of data validation!!!"
 
-2. DELETE OLD CLIENT INFORMATION (PUT request to url 'api/delete-sleeps/client_id' with JSON)
+2. ADD SLEEPS TO CLIENT (PUT request to url 'api/add-sleeps/client_id' with JSON)
 
-        required fields:
+        required fields in Client:
     {
         "client_name": "John Smith",
         "createdAt": "2022-04-04T03:07:34+03:00",
-    })
-    1. If client.name == client_name and client.pk == client_id 
-                       --> delete all sleeps (and segments) for current client
-    2. Otherwise --> return "Error in name for client.id={pk}"
-
-3. ADD SLEEPS TO CLIENT (PUT request to url 'api/add-sleeps/client_id' with JSON)
-
-        required fields:
-    {
-        "client_name": "John Smith",
-        "createdAt": "2022-04-04T03:07:34+03:00",
+        "locked": true,
         "sleeps": ALL INFORMATION ABOUT THE CLIENT!!!
-    })
-   1. If client.name == client_name and client.pk == client_id 
-      1. if client.sleeps is empty --> add all sleeps (and segments) for current client
-      2. Otherwise --> return "Mistake! You must clear old data before uploading new ones!"
-   2. Otherwise --> return "Client not found!"
+    }
+        
+         required fields in Sleep:
+    {
+        "locked": true,
+        "startRoutineTime": "2022-04-08T05:09:10+03:00",
+        "finishTime": "2022-04-08T05:09:14+03:00"
+    }
+  
+
+   1. If client exists 
+      1. get list of existing sleeps for the current client
+      2. each new_sleep is checking:
+         1. if new_sleep.locked == True
+         2. if new_sleep.startRoutineTime != for all sleeps.startRoutineTime
+         3. if new_sleep.finishTime       != for all sleeps.finishTime
+
    
-4. GET LIST OF CONSULTANTS (GET request to url 'api/consultants')
+3. GET LIST OF CONSULTANTS (GET request to url 'api/consultants')
     IMPORTANT! The consultant must be: enable=True
 
-5. GET LIST OF LANGUAGES (GET request to url 'api/languages')
+4. GET LIST OF LANGUAGES (GET request to url 'api/languages')
     IMPORTANT! The consultant must be: enable=True
