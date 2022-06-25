@@ -43,6 +43,9 @@ class UserProfile(models.Model):
     note = models.TextField(null=True, blank=True)
     enable = models.BooleanField(null=True, blank=True)
 
+    def __str__(self):
+        return f'{self.user}-{self.role}'
+
     @property
     def is_superuser(self) -> bool:
         return self.role == self.ROLE_ADMIN
